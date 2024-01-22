@@ -12,49 +12,49 @@ This project uses AWS CloudFormation to setup and manages various AWS resources 
 4. **Configure AWS CLI**: Set up your AWS CLI with credentials that have necessary permissions for creating and managing the AWS resources.
 
 ###  Parameters
-InstanceType: EC2 instance type to be launched.
-AllowedIPAddress: IP address (CIDR format) allowed to access the web server.
-EC2KeyPair: Existing EC2 KeyPair for SSH access.
-S3ObjectPath: S3 bucket and Python script path.
-VPCCIDR: CIDR block for the VPC.
-PublicSubnetA and PublicSubnetB: CIDR blocks for public subnets in different availability zones.
-Resources
-1. VPC (Virtual Private Cloud)
-Creates a VPC with specified CIDR block for subnets and the VPC.
-2. Subnets (PubSubnetZoneA and PubSubnetZoneB)
-Defines two public subnets in different availability zones.
-Associates them with the VPC.
-3. Internet Gateway
-Creates an internet gateway and associates it with the VPC.
-4. Routing
-Defines a route table and associates it with the public subnets.
-Routes traffic through the internet gateway.
-5. Security Groups (EC2SecurityGroup and ELBSecurityGroup)
-Defines security groups for EC2 instances and the ALB.
-Specifies inbound rules for SSH and HTTP in EC2 Security Group and HTTP in ALB Security Group
-6. IAM Role and Instance Profileb (Adjust if needed)
-Creates an IAM role and instance profile for the EC2 instance.
-Grants necessary permissions for SSM, S3, EC2, and describe tags.
-7. EC2 Instance (AmazonLinuxInstance)
-Launches an EC2 instance using Amazon Linux 2.
-Installs and configures Apache, installs Python dependencies, and executes a Python script from S3.
-Sends a CloudFormation signal upon successful initialization.
-8. Elastic Load Balancer (ALB)
-Creates an Application Load Balancer with specified subnets and security group.
-Defines an ALB listener forwarding traffic to the EC2 Target Group.
-9. EC2 Target Group (EC2TargetGroup)
-Creates an Elastic Load Balancer target group.
-Specifies health check settings and associates it with the EC2 instance.
-10. Elastic IP (EIP)
-Associates an Elastic IP address with the EC2 instance.
+   - InstanceType: EC2 instance type to be launched.
+   - AllowedIPAddress: IP address (CIDR format) allowed to access the web server.
+   - EC2KeyPair: Existing EC2 KeyPair for SSH access.
+   - S3ObjectPath: S3 bucket and Python script path.
+   - VPCCIDR: CIDR block for the VPC.
+   - PublicSubnetA and PublicSubnetB: CIDR blocks for public subnets in different availability zones.
+
+### Resources
+   - 1. VPC (Virtual Private Cloud)
+        Creates a VPC with specified CIDR block for subnets and the VPC.
+   - 2. Subnets (PubSubnetZoneA and PubSubnetZoneB)
+        - Defines two public subnets in different availability zones.
+        - Associates them with the VPC.
+   - 3. Internet Gateway
+        Creates an internet gateway and associates it with the VPC.
+   - 4. Routing
+        - Defines a route table and associates it with the public subnets.
+        - Routes traffic through the internet gateway.
+   - 5. Security Groups (EC2SecurityGroup and ELBSecurityGroup)
+        - Defines security groups for EC2 instances and the ALB.
+        - Specifies inbound rules for SSH and HTTP in EC2 Security Group and HTTP in ALB Security Group
+   - 6. IAM Role and Instance Profileb (Adjust if needed)
+        - Creates an IAM role and instance profile for the EC2 instance.
+        - Grants necessary permissions for SSM, S3, EC2, and describe tags.
+   - 7. EC2 Instance (AmazonLinuxInstance)
+        - Launches an EC2 instance using Amazon Linux 2.
+        - Installs and configures Apache, installs Python dependencies, and executes a Python script from S3.
+   - 8. Elastic Load Balancer (ALB)
+        - Creates an Application Load Balancer with specified subnets and security group.
+        - Defines an ALB listener forwarding traffic to the EC2 Target Group.
+   - 9. EC2 Target Group (EC2TargetGroup)
+        - Creates an Elastic Load Balancer target group.
+        - Specifies health check settings and associates it with the EC2 instance.
+   - 10. Elastic IP (EIP)
+    - Associates an Elastic IP address with the EC2 instance.
 
 ### Outputs:
-VPC ID
-ALB hostname - You use tho access the website.
-EC2 instance ID
-EC2 Target Group
-ALB ID
-SSH access command
+   - VPC ID
+   - ALB hostname - Use this to access the website.
+   - EC2 instance ID
+   - EC2 Target Group
+   - ALB ID
+   -  SSH access command
 
 ### Usage Guide
 Deploying the CloudFormation template can be done in 2 ways using the AWS Management Console or AWS CLI.
@@ -72,6 +72,6 @@ Deploying the CloudFormation template can be done in 2 ways using the AWS Manage
 **AWS Cli**:
 
 **Enhancements**:
-Implement CICD via github to deploy the template in AWS.
-Implement pre-commit hooks to check yml and python errors
+   - Implement CICD via github to deploy the template in AWS.
+   - Implement pre-commit hooks to check yml and python errors
 
