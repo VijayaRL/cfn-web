@@ -59,17 +59,19 @@ SSH access command
 ### Usage Guide
 Deploying the CloudFormation template can be done in 2 ways using the AWS Management Console or AWS CLI.
 **AWS Console**:
-a. Login to AWS Account
-b. Navigate to CloudFormation Page
-c. Click on 'Stacks' --> Select 'With New Resource(Standard) from 'Create Stack'
-d. Choose 'Template Ready' and 'Upload a Template File' options and provide the 'cfn-ec2.yml' cloudformation file from local system -> click Next
-e. Specify the stack details by giving stack name, parameters(AllowedIP Addresses), select ec2 keypair from dropdown and click Next
-f. Click Next in 'Configure stack options' page
-g. Click 'tick/check box' option at the bottom of the Review stack page and click next
-h. Monitor the CloudFormation stack creation progress in the 'Events' tab.
-i. Access output page by clicking on 'ALBHostName' url value provided in the outputs tab.
+   - a. Login to AWS Account
+   - b. Navigate to CloudFormation Page
+   - c. Click on 'Stacks' --> Select 'With New Resource(Standard) from 'Create Stack'
+   - d. Choose 'Template Ready' and 'Upload a Template File' options and provide the 'cfn-ec2.yml' cloudformation file from local system -> click Next
+   - e. Specify the stack details by giving stack name, parameters(AllowedIP Addresses), select ec2 keypair from dropdown and click Next
+   - f. Click Next in 'Configure stack options' page
+   - g. Click 'tick/check box' option at the bottom of the Review stack page and click next
+   - h. Monitor the CloudFormation stack creation progress in the 'Events' tab.
+   - i. Access output page by clicking on 'ALBHostName' url value provided in the outputs tab.
+
 **AWS Cli**:
 
 **Enhancements**:
 Implement CICD via github to deploy the template in AWS.
+Implement pre-commit hooks to check yml and python errors
 
