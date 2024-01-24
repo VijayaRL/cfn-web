@@ -13,6 +13,12 @@ Parameters:
       - t2.medium
     ConstraintDescription: Update the allowed values list to select additional instance types.
 
+  AllowedIPAddress:
+    Type: String
+    Description: IP address allowed to access the web server in CIDR Format. For single IPs add /32 at the end.
+    AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
+    ConstraintDescription: Must be a valid CIDR block.
+
   EC2KeyPair:
     Type: AWS::EC2::KeyPair::KeyName
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
@@ -21,33 +27,6 @@ Parameters:
     Type: String
     Description: S3 bucket name where the Python script is stored
     Default: "s3://jan2024sc/regions3.py"
-
-  AllowedIPAddress1:
-    Type: String
-    Description: IP address allowed to access the web server.
-    AllowedPattern: '((\d{1,3})\.){3}\d{1,3}'
-    ConstraintDescription: Must be a valid CIDR block.
-  #AllowedIPAddress2:
-  #  Type: String
-  #  Description: IP address allowed to access the web server.
-  #  AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
-  #  ConstraintDescription: Must be a valid CIDR block.
-  #AllowedIPAddress3:
-  #  Type: String
-  #  Description: IP address allowed to access the web server.
-  #  AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
-  #  ConstraintDescription: Must be a valid CIDR block.
-  #AllowedIPAddress4:
-  #  Type: String
-  #  Description: IP address allowed to access the web server.
-  #  AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
-  #  ConstraintDescription: Must be a valid CIDR block.
-  #AllowedIPAddress5:
-  #  Type: String
-  #  Description: IP address allowed to access the web server.
-  #  AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
-  #  ConstraintDescription: Must be a valid CIDR block.
-  
 
   VPCCIDR:
     Type: String
@@ -75,6 +54,7 @@ Resources:
 #########################
 # VPC Resources
 #########################
+    # VPC
     VPC:
         Type: 'AWS::EC2::VPC'
         Properties:
@@ -192,23 +172,7 @@ Resources:
                 - IpProtocol: tcp
                   FromPort: 22
                   ToPort: 22
-                  CidrIp: !Ref AllowedIPAddress1
-                #- IpProtocol: tcp
-                  #FromPort: 22
-                  #ToPort: 22
-                  #CidrIp: !Ref AllowedIPAddress2
-                #- IpProtocol: tcp
-                  #FromPort: 22
-                  #ToPort: 22
-                  #CidrIp: !Ref AllowedIPAddress5
-                #- IpProtocol: tcp
-                  #FromPort: 22
-                  #ToPort: 22
-                  #CidrIp: !Ref AllowedIPAddress4
-                #- IpProtocol: tcp
-                  #FromPort: 22
-                  #ToPort: 22
-                  #CidrIp: !Ref AllowedIPAddress5
+                  CidrIp: !Ref AllowedIPAddress
                 - IpProtocol: tcp
                   FromPort: 80
                   ToPort: 80
@@ -226,24 +190,8 @@ Resources:
                 - IpProtocol: tcp
                   FromPort: 80
                   ToPort: 80
-                  CidrIp: !Ref AllowedIPAddress1
-                #- IpProtocol: tcp
-                  #FromPort: 80
-                  #ToPort: 80
-                  #CidrIp: !Ref AllowedIPAddress2
-                #- IpProtocol: tcp
-                  #FromPort: 80
-                  #ToPort: 80
-                  #CidrIp: !Ref AllowedIPAddress3
-                #- IpProtocol: tcp
-                  #FromPort: 80
-                  #ToPort: 80
-                  #CidrIp: !Ref AllowedIPAddress4
-                #- IpProtocol: tcp
-                  #FromPort: 80
-                  #ToPort: 80
-                  #CidrIp: !Ref AllowedIPAddress5
-                
+                  CidrIp: !Ref AllowedIPAddress
+
 #########################
 # EC2 InstanceRole
 #########################
@@ -280,11 +228,10 @@ Resources:
           InstanceProfileName: EC2InstanceProfile
           Roles:
               - !Ref EC2InstanceRole
-
+    # Linux Instance with Apache running on Port 80
 #########################
 # EC2 Instance
 #########################
-    # Linux Instance with Apache running on Port 80
     AmazonLinuxInstance:
       Type: AWS::EC2::Instance
       Properties:
@@ -309,13 +256,8 @@ Resources:
             yum update -y
             yum install -y httpd
             amazon-linux-extras install epel -y
-            #yum install -y nginx
-            #systemctl start nginx
-            #systemctl enable nginx
             sudo pip3 install requests==2.18.4
             aws s3 cp ${S3ObjectPath} regions.py
-            pwd
-            ls -ltr
             python3 regions.py
             cat sorted_regions.html > /var/www/html/index.html
             systemctl start httpd
@@ -329,7 +271,6 @@ Resources:
             - Key: 'Name'
               Value:
                   Ref: 'AWS::StackName'
-
     # Target Group
     EC2TargetGroup:
       Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -381,7 +322,6 @@ Resources:
         SecurityGroups:
         - Ref: ELBSecurityGroup
 
-    #EIP
     EIP:
       Type: 'AWS::EC2::EIP'
       Properties:
