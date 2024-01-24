@@ -30,22 +30,22 @@ Parameters:
   #AllowedIPAddress2:
   #  Type: String
   #  Description: IP address allowed to access the web server.
-  #  AllowedPattern: '((\d{1,3})\.){3}\d{1,3}'
+  #  AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
   #  ConstraintDescription: Must be a valid CIDR block.
   #AllowedIPAddress3:
   #  Type: String
   #  Description: IP address allowed to access the web server.
-  #  AllowedPattern: '((\d{1,3})\.){3}\d{1,3}'
+  #  AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
   #  ConstraintDescription: Must be a valid CIDR block.
   #AllowedIPAddress4:
   #  Type: String
   #  Description: IP address allowed to access the web server.
-  #  AllowedPattern: '((\d{1,3})\.){3}\d{1,3}'
+  #  AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
   #  ConstraintDescription: Must be a valid CIDR block.
   #AllowedIPAddress5:
   #  Type: String
   #  Description: IP address allowed to access the web server.
-  #  AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/'
+  #  AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
   #  ConstraintDescription: Must be a valid CIDR block.
   
 
@@ -192,26 +192,26 @@ Resources:
                 - IpProtocol: tcp
                   FromPort: 22
                   ToPort: 22
-                  CidrIp: !Sub '${AllowedIPAddress1}/32'
+                  CidrIp: !Ref AllowedIPAddress1
                 #- IpProtocol: tcp
                   #FromPort: 22
                   #ToPort: 22
-                  #CidrIp: !Sub '${AllowedIPAddress2}/32'
+                  #CidrIp: !Ref AllowedIPAddress2
                 #- IpProtocol: tcp
                   #FromPort: 22
                   #ToPort: 22
-                  #CidrIp: !Sub '${AllowedIPAddress3}/32'
+                  #CidrIp: !Ref AllowedIPAddress5
                 #- IpProtocol: tcp
                   #FromPort: 22
                   #ToPort: 22
-                  #CidrIp: !Sub '${AllowedIPAddress4}/32'
+                  #CidrIp: !Ref AllowedIPAddress4
                 #- IpProtocol: tcp
                   #FromPort: 22
                   #ToPort: 22
-                  #CidrIp: !Sub '${AllowedIPAddress5}/32'
-                #- IpProtocol: tcp
-                  #FromPort: 80
-                  #ToPort: 80
+                  #CidrIp: !Ref AllowedIPAddress5
+                - IpProtocol: tcp
+                  FromPort: 80
+                  ToPort: 80
                   SourceSecurityGroupId:
                       Ref: ELBSecurityGroup
 
@@ -226,23 +226,23 @@ Resources:
                 - IpProtocol: tcp
                   FromPort: 80
                   ToPort: 80
-                  CidrIp: !Sub '${AllowedIPAddress1}/32'
+                  CidrIp: !Ref AllowedIPAddress1
                 #- IpProtocol: tcp
                   #FromPort: 80
                   #ToPort: 80
-                  #CidrIp: !Sub '${AllowedIPAddress2}/32'
+                  #CidrIp: !Ref AllowedIPAddress2
                 #- IpProtocol: tcp
                   #FromPort: 80
                   #ToPort: 80
-                  #CidrIp: !Sub '${AllowedIPAddress3}/32'
+                  #CidrIp: !Ref AllowedIPAddress3
                 #- IpProtocol: tcp
                   #FromPort: 80
                   #ToPort: 80
-                  #CidrIp: !Sub '${AllowedIPAddress4}/32'
+                  #CidrIp: !Ref AllowedIPAddress4
                 #- IpProtocol: tcp
                   #FromPort: 80
                   #ToPort: 80
-                  #CidrIp: !Sub '${AllowedIPAddress5}/32'
+                  #CidrIp: !Ref AllowedIPAddress5
                 
 #########################
 # EC2 InstanceRole
